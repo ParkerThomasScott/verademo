@@ -81,7 +81,7 @@ public class UserController {
 			HttpServletResponse httpResponse) {
 		// Check if user is already logged in
 		if (httpRequest.getSession().getAttribute("username_login") != null) {
-			logger.info("User is already logged in - redirecting...");
+			logger.info("User is already logged in - redirecting... THIS IS NEW");
 			if (target != null && !target.isEmpty() && !target.equals("null")) {
 				return "redirect:" + target;
 			} else {
