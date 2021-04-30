@@ -80,7 +80,7 @@ public class UserController {
 			HttpServletRequest httpRequest,
 			HttpServletResponse httpResponse) {
 		// Check if user is already logged in
-		if (httpRequest.getSession().getAttribute("username") != null) {
+		if (httpRequest.getSession().getAttribute("username_login") != null) {
 			logger.info("User is already logged in - redirecting...");
 			if (target != null && !target.isEmpty() && !target.equals("null")) {
 				return "redirect:" + target;
@@ -92,8 +92,8 @@ public class UserController {
 
 		User user = UserFactory.createFromRequest(httpRequest);
 		if (user != null) {
-			Utils.setSessionUserName(httpRequest, httpResponse, user.getUserName());
-			logger.info("User is remembered - redirecting...");
+			Utils.setSessionUserName(httpRequest, httpResponse, user.getUserName(), "username_login");
+			logger.info("User is remembered - redirecting... THIS IS NEW");
 			if (target != null && !target.isEmpty() && !target.equals("null")) {
 				return "redirect:" + target;
 			} else {
@@ -180,7 +180,7 @@ public class UserController {
 					UserFactory.updateInResponse(currentUser, response);
 				}
 
-				Utils.setSessionUserName(req, response, result.getString("username"));
+				Utils.setSessionUserName(req, response, result.getString("username"), "username_login");
 
 				// Update last login timestamp
 				PreparedStatement update = connect.prepareStatement("UPDATE users SET last_login=NOW() WHERE username=?;");
@@ -274,7 +274,7 @@ public class UserController {
 			HttpServletResponse response) {
 		logger.info("Entering processLogout");
 
-		Utils.setSessionUserName(req, response, null);
+		Utils.setSessionUserName(req, response, null, null);
 
 		User currentUser = null;
 		UserFactory.updateInResponse(currentUser, response);
@@ -296,7 +296,7 @@ public class UserController {
 			HttpServletResponse httpResponse,
 			Model model) {
 		logger.info("Entering processRegister");
-		Utils.setSessionUserName(httpRequest, httpResponse, username);
+		Utils.setSessionUserName(httpRequest, httpResponse, username, "username_register");
 
 		// Get the Database Connection
 		logger.info("Creating the Database connection");
@@ -597,7 +597,7 @@ public class UserController {
 			}
 
 			// Update all session and cookie logic
-			Utils.setSessionUserName(request, response, username);
+			Utils.setSessionUserName(request, response, username, "username_login");
 			Utils.setUsernameCookie(response, username);
 
 			// Update remember me functionality

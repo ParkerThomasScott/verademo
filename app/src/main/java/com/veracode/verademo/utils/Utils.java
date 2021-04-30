@@ -18,14 +18,14 @@ public class Utils {
 	}
 
 	public static String getSessionUserName(HttpServletRequest request, HttpServletResponse response) {
-		String username = (String) request.getSession().getAttribute("username");
+		String username = (String) request.getSession().getAttribute("username_login");
 		upgradeCookieSecurityForHttpsIfRequired(response);
 		
 		return username;
 	}
 
-	public static void setSessionUserName(HttpServletRequest request, HttpServletResponse response, String value) {
-		request.getSession().setAttribute("username", value);
+	public static void setSessionUserName(HttpServletRequest request, HttpServletResponse response, String value, String username_type) {
+		request.getSession().setAttribute(username_type, value);
 		upgradeCookieSecurityForHttpsIfRequired(response);
 	}
 
